@@ -5,6 +5,10 @@ export const metadata = {
   description: "Una aplicación especial para celebrar el amor con frases aleatorias y un diseño romántico.",
   manifest: "/manifest.json",
   themeColor: "#ff4d6d",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
