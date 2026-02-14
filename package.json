@@ -1,14 +1,17 @@
 {
-  "name": "valentine-app",
+  "name": "zowi-te-amo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint",
+    "seed": "node scripts/seed.js",
+    "add-phrase": "node -e \"require('./scripts/seed').addPhrase(process.argv[1])\""
   },
   "dependencies": {
+    "better-sqlite3": "^12.6.2",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
