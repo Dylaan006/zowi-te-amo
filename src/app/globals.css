@@ -19,10 +19,11 @@
 body {
   color: var(--foreground);
   background: var(--background);
+  /* Usamos variables CSS para poder randomizar desde JS */
   background-image:
-    radial-gradient(circle at 20% 30%, #ffccd5 0%, transparent 20%),
-    radial-gradient(circle at 80% 70%, #ff8fa3 0%, transparent 20%),
-    radial-gradient(circle at 50% 50%, #fff0f3 0%, #ffb3c1 100%);
+    radial-gradient(circle at var(--bg-x1, 20%) var(--bg-y1, 30%), var(--bg-color1, #ffccd5) 0%, transparent 40%),
+    radial-gradient(circle at var(--bg-x2, 80%) var(--bg-y2, 70%), var(--bg-color2, #ff8fa3) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, #fff0f3 0%, var(--bg-color3, #ffb3c1) 100%);
   background-attachment: fixed;
   font-family: 'Outfit', sans-serif;
   min-height: 100vh;
@@ -30,6 +31,8 @@ body {
   justify-content: center;
   align-items: center;
   overflow-x: hidden;
+  /* Esta es la clave para que el cambio de fondo sea suave */
+  transition: background 1.5s ease-in-out;
 }
 
 h1 {

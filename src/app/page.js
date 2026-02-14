@@ -1,33 +1,50 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
 
 export default function Home() {
   const [phrase, setPhrase] = useState('');
   const [loading, setLoading] = useState(true);
   const [hearts, setHearts] = useState([]);
+  const [fade, setFade] = useState(true);
+
+  const randomizeBackground = () => {
+    const randomPos = () => `${Math.floor(Math.random() * 80 + 10)}%`;
+    const pinks = ['#ffccd5', '#ffb3c1', '#ff8fa3', '#ff758f', '#ff4d6d', '#fff0f3'];
+    const randomColor = () => pinks[Math.floor(Math.random() * pinks.length)];
+
+    document.body.style.setProperty('--bg-x1', randomPos());
+    document.body.style.setProperty('--bg-y1', randomPos());
+    document.body.style.setProperty('--bg-x2', randomPos());
+    document.body.style.setProperty('--bg-y2', randomPos());
+    document.body.style.setProperty('--bg-color1', randomColor());
+    document.body.style.setProperty('--bg-color2', randomColor());
+    document.body.style.setProperty('--bg-color3', randomColor());
+  };
 
   const fetchRandomPhrase = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/phrase', { cache: 'no-store' });
-      const data = await res.json();
-      if (data.phrase) {
-        setPhrase(data.phrase);
+    setFade(false); // Empezar fade out
+    randomizeBackground(); // Cambiar fondo inmediatamente con transición suave
+
+    setTimeout(async () => {
+      try {
+        const res = await fetch('/api/phrase', { cache: 'no-store' });
+        const data = await res.json();
+        if (data.phrase) {
+          setPhrase(data.phrase);
+        }
+      } catch (error) {
+        setPhrase('Recorda que te amo');
+      } finally {
+        setFade(true); // Fade in con la nueva frase
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching phrase:', error);
-      setPhrase('El amor está en el aire...');
-    } finally {
-      setLoading(false);
-    }
+    }, 300); // Pequeña espera para el efecto de fade
   };
 
   useEffect(() => {
     fetchRandomPhrase();
 
-    // Create floating hearts
     const initialHearts = Array.from({ length: 15 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
@@ -39,11 +56,6 @@ export default function Home() {
 
   return (
     <main className="container">
-      <Head>
-        <title>Zowi te amo</title>
-        <meta name="description" content="Una aplicación romántica para descubrir frases de amor aleatorias." />
-      </Head>
-
       <div className="floating-hearts">
         {hearts.map((heart) => (
           <span
@@ -63,13 +75,12 @@ export default function Home() {
       <h1>Zowi te amo</h1>
 
       <div className="card">
-        {loading ? (
-          <div className="phrase" style={{ justifyContent: 'center' }}>
-            <div className="loader"></div>
-          </div>
-        ) : (
-          <p className="phrase">{phrase}</p>
-        )}
+        <p className={`phrase ${fade ? 'fade-in' : 'fade-out'}`} style={{
+          transition: 'opacity 0.5s ease',
+          opacity: fade ? 1 : 0
+        }}>
+          {phrase || "Cargando amor..."}
+        </p>
       </div>
 
       <div className="heart-container" onClick={fetchRandomPhrase} title="Obtener otra frase">
@@ -79,7 +90,7 @@ export default function Home() {
       </div>
 
       <p style={{ marginTop: '1rem', color: 'rgba(74, 14, 14, 0.6)', fontStyle: 'italic' }}>
-        Hace clic en el corazón para una nueva frase
+        Haz clic en el corazón para una nueva frase y diseño
       </p>
     </main>
   );
