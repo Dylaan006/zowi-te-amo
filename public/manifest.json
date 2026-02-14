@@ -1,0 +1,22 @@
+{
+    "name": "Zowi te amo",
+    "short_name": "Zowi",
+    "description": "Una aplicación romántica para descubrir frases de amor aleatorias.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff0f3",
+    "theme_color": "#ff4d6d",
+    "icons": [
+        {
+            "src": "/icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
